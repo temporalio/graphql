@@ -1,14 +1,13 @@
 {
-  "name": "temporal-hello-world",
+  "name": "temporal-graphql",
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "ts-node src/index.ts",
+    "start.watch": "nodemon src/index.ts",
     "build": "tsc --build",
     "build.watch": "tsc --build --watch",
-    "lint": "eslint .",
-    "start": "ts-node src/worker.ts",
-    "start.watch": "nodemon src/worker.ts",
-    "workflow": "ts-node src/client.ts"
+    "lint": "eslint ."
   },
   "nodemonConfig": {
     "execMap": {
@@ -20,7 +19,9 @@
     ]
   },
   "dependencies": {
-    "temporalio": "0.19.x"
+    "@temporalio/client": "0.19.x",
+    "apollo-server": "^3.6.7",
+    "graphql": "^16.3.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.0",
