@@ -1,12 +1,84 @@
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
-  }
+scalar JSON
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
+enum ExecutionStatus {
+  UNSPECIFIED
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELED
+  TERMINATED
+  CONTINUED_AS_NEW
+  TIMED_OUT
+}
+
+type Workflow {
+  id: ID!
+  runId: ID!
+  type: String!
+  status: ExecutionStatus!
+  taskQueue: String!
+  result: JSON
+  historyLength: PositiveInt!
+  startTime: DateTime!
+  closeTime: DateTime
+  executionTime: DateTime
+  parentExecution: Workflow
+  memo: JSON
+  searchAttributes: JSON
+}
+
+# TODO add rest https://typescript.temporal.io/api/interfaces/client.WorkflowOptions
+input StartInput {
+  type: String!
+  taskQueue: String!
+  args: JSON
+  id: ID
+}
+
+input SignalInput {
+  id: ID!
+  name: String!
+  args: JSON
+  runId: ID
+}
+
+input QueryInput {
+  id: ID!
+  name: String!
+  args: JSON
+  runId: ID
+}
+
+input CancelInput {
+  id: ID!
+  runId: ID
+}
+
+input TerminateInput {
+  id: ID!
+  runId: ID
+  reason: String
+}
+
+# https://typescript.temporal.io/api/interfaces/client.WorkflowSignalWithStartOptions
+input SignalWithStartInput {
+  id: ID!
+  workflowType: String!
+  args: JSON
+  taskQueue: String!
+  signal: String!
+  signalArgs: JSON
+}
+
+type Query {
+  workflow(id: ID!, runId: ID): Workflow
+  query(input: QueryInput!): JSON
+}
+
+type Mutation {
+  start(input: StartInput!): Workflow!
+  signal(input: SignalInput!): Workflow!
+  cancel(input: CancelInput!): Workflow!
+  terminate(input: TerminateInput!): Workflow!
+  signalWithStart(input: SignalWithStartInput!): Workflow!
+}

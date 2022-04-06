@@ -7,24 +7,34 @@
     "start.watch": "nodemon src/index.ts",
     "build": "tsc --build",
     "build.watch": "tsc --build --watch",
+    "generate": "graphql-codegen",
     "lint": "eslint ."
   },
   "nodemonConfig": {
     "execMap": {
       "ts": "ts-node"
     },
-    "ext": "ts",
+    "ext": "ts,graphql",
     "watch": [
       "src"
     ]
   },
   "dependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.4.8",
+    "@graphql-codegen/typescript-resolvers": "^2.6.1",
     "@temporalio/client": "0.19.x",
+    "@types/lodash": "^4.14.181",
     "apollo-server": "^3.6.7",
-    "graphql": "^16.3.0"
+    "graphql": "^15.8.0",
+    "graphql-parse-resolve-info": "^4.12.0",
+    "graphql-scalars": "^1.17.0",
+    "lodash": "^4.17.21",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.0",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^7.32.0",
