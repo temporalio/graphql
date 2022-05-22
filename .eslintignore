@@ -1,3 +1,4 @@
 node_modules
 lib
 .eslintrc.js
+src/generated-resolver-types.ts
