@@ -1,3 +1,4 @@
+import type { MyContext } from './types'
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -14,6 +15,8 @@ export type Scalars = {
   Float: number;
   /** Banking account number is a string of 5 to 17 alphanumeric values for representing an generic account number */
   AccountNumber: any;
+  /** The `Base64` scalar type is Base64-encoded binary field. */
+  Base64: any;
   /** The `BigInt` scalar type represents non-fractional signed whole numeric values. */
   BigInt: any;
   /** The `Byte` scalar type represents byte value as a Buffer */
@@ -211,7 +214,7 @@ export type Query = {
   __typename?: 'Query';
   query?: Maybe<Scalars['JSON']>;
   workflow?: Maybe<Workflow>;
-  workflows?: Maybe<Workflow>;
+  workflows?: Maybe<Workflows>;
 };
 
 
@@ -274,11 +277,12 @@ export type Workflow = {
   id: Scalars['ID'];
   isRunning: Scalars['Boolean'];
   memo?: Maybe<Scalars['JSON']>;
-  parentExecution?: Maybe<Workflow>;
+  parent?: Maybe<Workflow>;
+  parentNamespace?: Maybe<Scalars['String']>;
   result?: Maybe<Scalars['JSON']>;
   runId: Scalars['ID'];
   searchAttributes?: Maybe<Scalars['JSON']>;
-  startTime: Scalars['DateTime'];
+  startTime?: Maybe<Scalars['DateTime']>;
   status: WorkflowStatus;
   taskQueue: Scalars['String'];
   type: Scalars['String'];
@@ -295,9 +299,15 @@ export enum WorkflowStatus {
   Unspecified = 'UNSPECIFIED'
 }
 
+export type Workflows = {
+  __typename?: 'Workflows';
+  nextPageToken?: Maybe<Scalars['Base64']>;
+  nodes: Array<Workflow>;
+};
+
 export type WorkflowsInput = {
   namespace?: InputMaybe<Scalars['String']>;
-  nextPageToken?: InputMaybe<Scalars['String']>;
+  nextPageToken?: InputMaybe<Scalars['Base64']>;
   pageSize?: InputMaybe<Scalars['PositiveInt']>;
   query?: InputMaybe<Scalars['String']>;
 };
@@ -373,6 +383,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   AccountNumber: ResolverTypeWrapper<Scalars['AccountNumber']>;
+  Base64: ResolverTypeWrapper<Scalars['Base64']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Byte: ResolverTypeWrapper<Scalars['Byte']>;
@@ -443,12 +454,14 @@ export type ResolversTypes = ResolversObject<{
   Void: ResolverTypeWrapper<Scalars['Void']>;
   Workflow: ResolverTypeWrapper<Workflow>;
   WorkflowStatus: WorkflowStatus;
+  Workflows: ResolverTypeWrapper<Workflows>;
   WorkflowsInput: WorkflowsInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   AccountNumber: Scalars['AccountNumber'];
+  Base64: Scalars['Base64'];
   BigInt: Scalars['BigInt'];
   Boolean: Scalars['Boolean'];
   Byte: Scalars['Byte'];
@@ -518,11 +531,16 @@ export type ResolversParentTypes = ResolversObject<{
   UtcOffset: Scalars['UtcOffset'];
   Void: Scalars['Void'];
   Workflow: Workflow;
+  Workflows: Workflows;
   WorkflowsInput: WorkflowsInput;
 }>;
 
 export interface AccountNumberScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['AccountNumber'], any> {
   name: 'AccountNumber';
+}
+
+export interface Base64ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Base64'], any> {
+  name: 'Base64';
 }
 
 export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigInt'], any> {
@@ -708,7 +726,7 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   query?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<QueryQueryArgs, 'input'>>;
   workflow?: Resolver<Maybe<ResolversTypes['Workflow']>, ParentType, ContextType, RequireFields<QueryWorkflowArgs, 'id'>>;
-  workflows?: Resolver<Maybe<ResolversTypes['Workflow']>, ParentType, ContextType, RequireFields<QueryWorkflowsArgs, 'input'>>;
+  workflows?: Resolver<Maybe<ResolversTypes['Workflows']>, ParentType, ContextType, RequireFields<QueryWorkflowsArgs, 'input'>>;
 }>;
 
 export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGB'], any> {
@@ -774,19 +792,27 @@ export type WorkflowResolvers<ContextType = MyContext, ParentType extends Resolv
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isRunning?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   memo?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
-  parentExecution?: Resolver<Maybe<ResolversTypes['Workflow']>, ParentType, ContextType>;
+  parent?: Resolver<Maybe<ResolversTypes['Workflow']>, ParentType, ContextType>;
+  parentNamespace?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   result?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   runId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   searchAttributes?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
-  startTime?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  startTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   status?: Resolver<ResolversTypes['WorkflowStatus'], ParentType, ContextType>;
   taskQueue?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type WorkflowsResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Workflows'] = ResolversParentTypes['Workflows']> = ResolversObject<{
+  nextPageToken?: Resolver<Maybe<ResolversTypes['Base64']>, ParentType, ContextType>;
+  nodes?: Resolver<Array<ResolversTypes['Workflow']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type Resolvers<ContextType = MyContext> = ResolversObject<{
   AccountNumber?: GraphQLScalarType;
+  Base64?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
   Byte?: GraphQLScalarType;
   CountryCode?: GraphQLScalarType;
@@ -847,5 +873,6 @@ export type Resolvers<ContextType = MyContext> = ResolversObject<{
   UtcOffset?: GraphQLScalarType;
   Void?: GraphQLScalarType;
   Workflow?: WorkflowResolvers<ContextType>;
+  Workflows?: WorkflowsResolvers<ContextType>;
 }>;
 

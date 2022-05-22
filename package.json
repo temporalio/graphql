@@ -7,7 +7,7 @@
     "start.watch": "nodemon src/index.ts",
     "build": "tsc --build",
     "build.watch": "tsc --build --watch",
-    "generate": "graphql-codegen",
+    "codegen": "graphql-codegen && printf '%s\n' \"import type { MyContext } from './types'\" | cat - src/generated-resolver-types.ts > new && mv new src/generated-resolver-types.ts",
     "lint": "eslint ."
   },
   "nodemonConfig": {
@@ -23,9 +23,11 @@
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/typescript": "^2.4.8",
     "@graphql-codegen/typescript-resolvers": "^2.6.1",
-    "@temporalio/client": "0.19.x",
+    "@temporalio/client": "^0.23.0",
+    "@temporalio/common": "^0.23.0",
     "@types/lodash": "^4.14.181",
     "apollo-server": "^3.6.7",
+    "base64-arraybuffer": "^1.0.2",
     "graphql": "^15.8.0",
     "graphql-parse-resolve-info": "^4.12.0",
     "graphql-scalars": "^1.17.0",

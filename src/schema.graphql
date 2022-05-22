@@ -1,4 +1,5 @@
 scalar JSON
+scalar Base64
 
 enum WorkflowStatus {
   UNSPECIFIED
@@ -20,12 +21,16 @@ type Workflow {
   taskQueue: String!
   result: JSON
   historyLength: PositiveInt!
-  startTime: DateTime!
-  closeTime: DateTime
+  #todo nonnull?
+  startTime: DateTime
+  #todo nonnull?
   executionTime: DateTime
-  parentExecution: Workflow
+  closeTime: DateTime
+  parent: Workflow
+  parentNamespace: String
   memo: JSON
   searchAttributes: JSON
+  stateTransitionCount: NonNegativeInt
 }
 
 # TODO add rest https://typescript.temporal.io/api/interfaces/client.WorkflowOptions
@@ -73,15 +78,20 @@ input SignalWithStartInput {
 
 input WorkflowsInput {
   namespace: String
-  nextPageToken: String
+  nextPageToken: Base64
   pageSize: PositiveInt
   query: String
   # archived: boolean
 }
 
+type Workflows {
+  nodes: [Workflow!]!
+  nextPageToken: Base64
+}
+
 type Query {
   workflow(id: ID!, runId: ID): Workflow
-  workflows(input: WorkflowsInput!): Workflow
+  workflows(input: WorkflowsInput): Workflows
   query(input: QueryInput!): JSON
 }
 
