@@ -46,14 +46,10 @@ export async function getWorkflow({
 
   const promises: [WorkflowExecutionDescription, any] = [
     await handle.describe(),
-    null,
+    resultRequested(fields) ? handle.result() : null,
   ]
-  if (isRecord(fields) && hasOwnProperty(fields, 'result')) {
-    promises[1] = handle.result()
-  }
 
   const [description, result] = await Promise.all(promises)
-  console.log('description:', description)
 
   return {
     id,
@@ -61,3 +57,13 @@ export async function getWorkflow({
     ...(result && { result }),
   } as unknown as Workflow
 }
+
+const resultRequested = (fields: unknown) =>
+  isRecord(fields) && hasOwnProperty(fields, 'result')
+
+// type GetWorkflowsInput = {
+//   input: WorkflowsInput
+//   client: WorkflowClient
+// }
+
+// export async function getWorkflows({ input, client }: )

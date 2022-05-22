@@ -1,6 +1,6 @@
 scalar JSON
 
-enum ExecutionStatus {
+enum WorkflowStatus {
   UNSPECIFIED
   RUNNING
   COMPLETED
@@ -15,7 +15,8 @@ type Workflow {
   id: ID!
   runId: ID!
   type: String!
-  status: ExecutionStatus!
+  status: WorkflowStatus!
+  isRunning: Boolean!
   taskQueue: String!
   result: JSON
   historyLength: PositiveInt!
@@ -70,8 +71,17 @@ input SignalWithStartInput {
   signalArgs: JSON
 }
 
+input WorkflowsInput {
+  namespace: String
+  nextPageToken: String
+  pageSize: PositiveInt
+  query: String
+  # archived: boolean
+}
+
 type Query {
   workflow(id: ID!, runId: ID): Workflow
+  workflows(input: WorkflowsInput!): Workflow
   query(input: QueryInput!): JSON
 }
 

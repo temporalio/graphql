@@ -7,7 +7,7 @@ import {
   typeDefs as scalarTypeDefs,
 } from 'graphql-scalars'
 import { v4 as uuid } from 'uuid'
-import { Resolvers } from './generated-resolver-types'
+import { Resolvers, WorkflowStatus } from './generated-resolver-types'
 import { getWorkflow } from './helpers'
 
 const typeDefs = [
@@ -17,7 +17,7 @@ const typeDefs = [
 
 const resolvers: Resolvers = {
   ...scalarResolvers,
-  ExecutionStatus: {
+  WorkflowStatus: {
     UNSPECIFIED: 0,
     RUNNING: 1,
     COMPLETED: 2,
@@ -29,6 +29,7 @@ const resolvers: Resolvers = {
   },
   Workflow: {
     id: (workflow: any) => workflow.id || workflow.workflowId,
+    isRunning: ({ status }) => status === WorkflowStatus.Running,
     parentExecution: (workflow, _, { client }, info) =>
       workflow.parentExecution
         ? getWorkflow({ ...workflow.parentExecution, client, info })
@@ -37,6 +38,7 @@ const resolvers: Resolvers = {
   Query: {
     workflow: async (_, { id, runId }, { client }, info) =>
       getWorkflow({ id, runId, client, info }),
+    // workflows: async (_, { input }, { client }, info) => getWorkflows({ input, client }),
     query: async (_, { input: { id, name, args, runId } }, { client }) => {
       const handle = client.getHandle(id, runId)
       return await handle.query({ type: 'query', name }, ...(args || []))
