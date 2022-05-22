@@ -20,11 +20,9 @@ type Workflow {
   isRunning: Boolean!
   taskQueue: String!
   result: JSON
-  historyLength: PositiveInt!
-  #todo nonnull?
-  startTime: DateTime
-  #todo nonnull?
-  executionTime: DateTime
+  historyLength: NonNegativeInt!
+  startTime: DateTime!
+  executionTime: DateTime!
   closeTime: DateTime
   parent: Workflow
   parentNamespace: String

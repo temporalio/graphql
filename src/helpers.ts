@@ -9,7 +9,6 @@ import {
   optionalTsToDate,
   searchAttributePayloadConverter,
   tsToDate,
-  tsToMs,
 } from '@temporalio/common'
 import { WrappedPayloadConverter } from '@temporalio/common/lib/converter/wrapped-payload-converter'
 import { GraphQLResolveInfo } from 'graphql'
@@ -77,7 +76,7 @@ const resultRequested = (fields: unknown) =>
   isRecord(fields) && hasOwnProperty(fields, 'result')
 
 type GetWorkflowsInput = {
-  input: WorkflowsInput
+  input?: WorkflowsInput | null
   client: WorkflowClient
   info: GraphQLResolveInfo
 }
@@ -86,9 +85,8 @@ export async function getWorkflows({ input, client }: GetWorkflowsInput) {
   const { executions, nextPageToken } =
     await client.service.listWorkflowExecutions({
       namespace: 'default',
-      ...input,
+      ...(input || {}),
     })
-
   const nodes = executions.map(
     ({
       execution,
@@ -100,32 +98,48 @@ export async function getWorkflows({ input, client }: GetWorkflowsInput) {
       parentNamespaceId,
       parentExecution,
       executionTime,
-      memo,
-      searchAttributes,
+      memo: memoRaw,
+      searchAttributes: searchAttributesRaw,
       // autoResetPoints,
       taskQueue,
       stateTransitionCount,
-    }) =>
-      ({
+    }) => {
+      let memo: Record<string, unknown> | undefined | null = null
+      let searchAttributes: Record<string, unknown> | undefined | null = null
+      console.log(
+        'memoRaw:',
+        memoRaw,
+        'searchAttributesRaw:',
+        searchAttributesRaw
+      )
+      try {
+        memo = mapFromPayloads(defaultConverter, memoRaw?.fields)
+        searchAttributes = mapFromPayloads(
+          searchAttributeConverter,
+          searchAttributesRaw?.indexedFields
+        )
+      } catch (e) {
+        // unable to convert with default converter
+      }
+
+      return {
         id: execution!.workflowId,
         runId: execution!.runId,
         type: type!.name,
         status: status!,
         taskQueue: taskQueue!,
-        historyLength: historyLength!,
-        startTime: optionalTsToDate(startTime),
-        executionTime: optionalTsToDate(executionTime),
+        historyLength: historyLength!.toInt(),
+        startTime: tsToDate(startTime!),
+        executionTime: tsToDate(executionTime!),
         closeTime: optionalTsToDate(closeTime),
         parentExecution,
         parentNamespace: parentNamespaceId!,
         // todo raw memo w/ base64
-        // memo: mapFromPayloads(defaultConverter, memo?.fields),
-        // searchAttributes: mapFromPayloads(
-        //   searchAttributeConverter,
-        //   searchAttributes?.indexedFields
-        // ),
-        stateTransitionCount: stateTransitionCount!,
-      } as unknown as Workflow) // manually check we have all fields
+        memo: memo && Object.keys(memo!).length === 0 ? null : memo, // convert empty object to null
+        searchAttributes,
+        stateTransitionCount: stateTransitionCount!.toInt(),
+      } as unknown as Workflow // manually check we have all fields
+    }
   )
 
   return {

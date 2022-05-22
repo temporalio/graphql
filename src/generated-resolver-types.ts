@@ -230,7 +230,7 @@ export type QueryWorkflowArgs = {
 
 
 export type QueryWorkflowsArgs = {
-  input: WorkflowsInput;
+  input?: InputMaybe<WorkflowsInput>;
 };
 
 export type QueryInput = {
@@ -272,8 +272,8 @@ export type TerminateInput = {
 export type Workflow = {
   __typename?: 'Workflow';
   closeTime?: Maybe<Scalars['DateTime']>;
-  executionTime?: Maybe<Scalars['DateTime']>;
-  historyLength: Scalars['PositiveInt'];
+  executionTime: Scalars['DateTime'];
+  historyLength: Scalars['NonNegativeInt'];
   id: Scalars['ID'];
   isRunning: Scalars['Boolean'];
   memo?: Maybe<Scalars['JSON']>;
@@ -282,7 +282,8 @@ export type Workflow = {
   result?: Maybe<Scalars['JSON']>;
   runId: Scalars['ID'];
   searchAttributes?: Maybe<Scalars['JSON']>;
-  startTime?: Maybe<Scalars['DateTime']>;
+  startTime: Scalars['DateTime'];
+  stateTransitionCount?: Maybe<Scalars['NonNegativeInt']>;
   status: WorkflowStatus;
   taskQueue: Scalars['String'];
   type: Scalars['String'];
@@ -726,7 +727,7 @@ export interface PostalCodeScalarConfig extends GraphQLScalarTypeConfig<Resolver
 export type QueryResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   query?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType, RequireFields<QueryQueryArgs, 'input'>>;
   workflow?: Resolver<Maybe<ResolversTypes['Workflow']>, ParentType, ContextType, RequireFields<QueryWorkflowArgs, 'id'>>;
-  workflows?: Resolver<Maybe<ResolversTypes['Workflows']>, ParentType, ContextType, RequireFields<QueryWorkflowsArgs, 'input'>>;
+  workflows?: Resolver<Maybe<ResolversTypes['Workflows']>, ParentType, ContextType, Partial<QueryWorkflowsArgs>>;
 }>;
 
 export interface RgbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['RGB'], any> {
@@ -787,8 +788,8 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type WorkflowResolvers<ContextType = MyContext, ParentType extends ResolversParentTypes['Workflow'] = ResolversParentTypes['Workflow']> = ResolversObject<{
   closeTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  executionTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
-  historyLength?: Resolver<ResolversTypes['PositiveInt'], ParentType, ContextType>;
+  executionTime?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  historyLength?: Resolver<ResolversTypes['NonNegativeInt'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   isRunning?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   memo?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
@@ -797,7 +798,8 @@ export type WorkflowResolvers<ContextType = MyContext, ParentType extends Resolv
   result?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
   runId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   searchAttributes?: Resolver<Maybe<ResolversTypes['JSON']>, ParentType, ContextType>;
-  startTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
+  startTime?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  stateTransitionCount?: Resolver<Maybe<ResolversTypes['NonNegativeInt']>, ParentType, ContextType>;
   status?: Resolver<ResolversTypes['WorkflowStatus'], ParentType, ContextType>;
   taskQueue?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
