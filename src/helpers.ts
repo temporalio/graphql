@@ -128,7 +128,7 @@ export async function getWorkflows({ input, client }: GetWorkflowsInput) {
         executionTime: tsToDate(executionTime!),
         closeTime: optionalTsToDate(closeTime),
         parentExecution,
-        parentNamespace: parentNamespaceId!,
+        parentNamespace: parentNamespaceId || null, // convert empty string to null
         // todo raw memo w/ base64 payloads
         memo: memo && Object.keys(memo!).length === 0 ? null : memo, // convert empty object to null
         searchAttributes,
