@@ -1,20 +1,28 @@
-# Hello World
+# `graphql`
 
-This is the default project that is scaffolded out when you run `npx @temporalio/create@latest ./myfolder`.
+A GraphQL server that uses the [TypeScript SDK](https://docs.temporal.io/docs/typescript/introduction) to query Temporal Server. Built with [Apollo Server](https://www.apollographql.com/docs/apollo-server).
 
-The [Hello World Tutorial](https://docs.temporal.io/docs/typescript/hello-world/) walks through the code in this sample.
+This server is able to decode Payloads (and encode arguments), but doesn't cover the entire Temporal API. For a GraphQL server that covers more gRPC methods, see [`temporalio/graphql-full`](https://github.com/temporalio/graphql-full).
 
-### Running this sample
+## Get started
 
-1. Make sure Temporal Server is running locally (see the [quick install guide](https://docs.temporal.io/docs/server/quick-install/)).
-1. `npm install` to install dependencies.
-1. `npm run start.watch` to start the Worker.
-1. In another shell, `npm run workflow` to run the Workflow Client.
-
-The client should log the Workflow ID that is started, and you should see it reflected in Temporal Web UI.
-
-Optionally, you can also uncomment the `await handle.result()`, rerun, and see the client script return:
-
-```bash
-Hello, Temporal!
 ```
+git clone https://github.com/temporalio/graphql.git
+cd graphql
+npm i
+npm run start.watch
+```
+
+Open [localhost:4000](http://localhost:4000/) or point your GraphQL IDE (like [GraphQL Studio](https://studio.apollographql.com/sandbox/explorer)) at `http://localhost:4000/graphql`.
+
+### Updating types
+
+After you change [`src/schema.graphql`](src/schema.graphql), while your dev server is running (without errors), do:
+
+```
+npm run codegen
+``` 
+
+to update the types in [`src/generated-resolver-types.ts`](src/generated-resolver-types.ts).
+
+

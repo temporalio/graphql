@@ -106,12 +106,7 @@ export async function getWorkflows({ input, client }: GetWorkflowsInput) {
     }) => {
       let memo: Record<string, unknown> | undefined | null = null
       let searchAttributes: Record<string, unknown> | undefined | null = null
-      console.log(
-        'memoRaw:',
-        memoRaw,
-        'searchAttributesRaw:',
-        searchAttributesRaw
-      )
+
       try {
         memo = mapFromPayloads(defaultConverter, memoRaw?.fields)
         searchAttributes = mapFromPayloads(
@@ -134,7 +129,7 @@ export async function getWorkflows({ input, client }: GetWorkflowsInput) {
         closeTime: optionalTsToDate(closeTime),
         parentExecution,
         parentNamespace: parentNamespaceId!,
-        // todo raw memo w/ base64
+        // todo raw memo w/ base64 payloads
         memo: memo && Object.keys(memo!).length === 0 ? null : memo, // convert empty object to null
         searchAttributes,
         stateTransitionCount: stateTransitionCount!.toInt(),
