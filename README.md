@@ -1,8 +1,12 @@
-# `graphql`
+*⚠️ This project is in alpha. We welcome feedback and contributions.*
 
 A GraphQL server that uses the [TypeScript SDK](https://docs.temporal.io/docs/typescript/introduction) to query Temporal Server. Built with [Apollo Server](https://www.apollographql.com/docs/apollo-server).
 
-This server is able to decode Payloads (and encode arguments), but doesn't cover the entire Temporal API. For a GraphQL server that covers more gRPC methods, see [`temporalio/graphql-full`](https://github.com/temporalio/graphql-full).
+## GraphQL projects
+
+- This repo: A Node server that's able to decode Payloads (and encode arguments), but doesn't cover the entire Temporal API. Feel free to open PRs with more coverage. 
+- [`temporalio/graphql-full`](https://github.com/temporalio/graphql-full): A Java GraphQL server that covers more gRPC methods but doesn't handle Payloads well.
+- [`vkarpov15/temporal-graphql`](https://github.com/vkarpov15/temporal-graphql): Generate a schema with per-Workflow mutations (versus the generic schema used in the above) from Workflows defined in the TypeScript SDK.
 
 ## Get started
 
