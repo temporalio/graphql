@@ -8,7 +8,11 @@
     "build": "tsc --build",
     "build.watch": "tsc --build --watch",
     "codegen": "graphql-codegen && printf '%s\n' \"import type { MyContext } from './types'\" | cat - src/generated-resolver-types.ts > new && mv new src/generated-resolver-types.ts",
-    "lint": "eslint ."
+    "update-schema": "graphql introspect -w generated/graphql.schema.json && ts-node src/scripts/convert-json-to-sdl.ts > generated/full-schema.graphql",
+    "docs": "spectaql docs-config.yaml",
+    "lint": "eslint .",
+    "graphql:diff": "graphql diff",
+    "graphql:similar": "graphql similar"
   },
   "nodemonConfig": {
     "execMap": {
@@ -20,21 +24,28 @@
     ]
   },
   "dependencies": {
+    "@graphql-cli/introspect": "^2.1.0",
     "@graphql-codegen/cli": "^2.6.2",
     "@graphql-codegen/typescript": "^2.4.8",
     "@graphql-codegen/typescript-resolvers": "^2.6.1",
+    "@graphql-inspector/graphql-cli-common": "^2.9.0",
     "@temporalio/client": "^0.23.0",
     "@temporalio/common": "^0.23.0",
     "@types/lodash": "^4.14.181",
     "apollo-server": "^3.6.7",
     "base64-arraybuffer": "^1.0.2",
     "graphql": "^15.8.0",
+    "graphql-cli": "^4.1.0",
     "graphql-parse-resolve-info": "^4.12.0",
     "graphql-scalars": "^1.17.0",
     "lodash": "^4.17.21",
+    "spectaql": "^1.4.2",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@graphql-cli/codegen": "2.3.3",
+    "@graphql-cli/diff": "2.1.0",
+    "@graphql-cli/similar": "2.1.0",
     "@tsconfig/node16": "^1.0.0",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -42,6 +53,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-deprecation": "^1.2.1",
+    "graphql-cli": "4.1.0",
     "nodemon": "^2.0.12",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"

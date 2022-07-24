@@ -1,0 +1,15 @@
+schema: 'http://localhost:4000/graphql'
+extensions:
+  codegen:
+    generates:
+      ./src/generated-resolver-types.ts:
+        config:
+          contextType: MyContext
+          scalars:
+            PositiveInt: any
+          useIndexSignature: true
+        plugins:
+          - typescript
+          - typescript-resolvers
+  diff:
+    baseSchema: your-base-schema-here
