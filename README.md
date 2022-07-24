@@ -2,6 +2,10 @@
 
 A GraphQL server that uses the [TypeScript SDK](https://docs.temporal.io/docs/typescript/introduction) to query Temporal Server. Built with [Apollo Server](https://www.apollographql.com/docs/apollo-server).
 
+[Documentation site](https://temporal-graphql.netlify.app/)
+- [Queries](https://temporal-graphql.netlify.app/#group-Operations-Queries)
+- [Mutations](https://temporal-graphql.netlify.app/#group-Operations-Mutations)
+
 ## GraphQL projects
 
 - This repo: A Node server that's able to decode Payloads (and encode arguments), but doesn't cover the entire Temporal API. Feel free to open PRs with more coverage. 
