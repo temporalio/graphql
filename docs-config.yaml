@@ -349,7 +349,7 @@ info:
       url: https://github.com/temporalio/graphql/
     # Can be a Title (for the Nav panel) + description (for the Content panel)
     - title: Alpha
-      description: ⚠️ This project is in alpha. We welcome feedback and contributions [on GitHub](https://github.com/temporalio/sdk-typescript/).
+      description: ⚠️ This project is in alpha. We welcome feedback and contributions [on GitHub](https://github.com/temporalio/graphql/).
     # Can be a Title (for the Nav panel) + file that gets loaded (for the Content panel)
     # - title: Content from file that supports markdown
     #   file: ./examples/data/intro-items-markdown.md
