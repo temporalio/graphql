@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@graphql-cli/introspect": "^2.1.0",
-    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/cli": "^2.16.5",
     "@graphql-codegen/typescript": "^2.4.8",
     "@graphql-codegen/typescript-resolvers": "^2.6.1",
     "@graphql-inspector/graphql-cli-common": "^2.9.0",
@@ -43,7 +43,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@graphql-cli/codegen": "2.3.3",
+    "@graphql-cli/codegen": "2.4.25",
     "@graphql-cli/diff": "2.1.0",
     "@graphql-cli/similar": "2.1.0",
     "@tsconfig/node16": "^1.0.0",
