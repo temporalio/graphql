@@ -29,7 +29,7 @@
     "@graphql-codegen/typescript": "^2.4.8",
     "@graphql-codegen/typescript-resolvers": "^2.6.1",
     "@graphql-inspector/graphql-cli-common": "^2.9.0",
-    "@temporalio/client": "^0.23.0",
+    "@temporalio/client": "^1.0.0",
     "@temporalio/common": "^0.23.0",
     "@types/lodash": "^4.14.181",
     "apollo-server": "^3.6.7",
