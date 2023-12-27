@@ -4,6 +4,7 @@ import { Base64 } from './base64'
 import { Resolvers, WorkflowStatus } from './generated-resolver-types'
 import { getWorkflow, getWorkflows } from './helpers'
 import { hasOwnProperties, hasOwnProperty, isRecord } from './types'
+import { QueryDefinition, SignalDefinition } from '@temporalio/client'
 
 export const resolvers: Resolvers = {
   ...scalarResolvers,
@@ -47,7 +48,10 @@ export const resolvers: Resolvers = {
       getWorkflows({ input, client, info }),
     query: async (_, { input: { id, name, args, runId } }, { client }) => {
       const handle = client.getHandle(id, runId ?? undefined)
-      return await handle.query({ type: 'query', name }, ...(args || []))
+      return await handle.query(
+        { type: 'query', name } as QueryDefinition<unknown, any>,
+        ...(args || [])
+      )
     },
   },
   Mutation: {
@@ -72,7 +76,7 @@ export const resolvers: Resolvers = {
       info
     ) => {
       const handle = client.getHandle(id, runId ?? undefined)
-      await handle.signal({ type: 'signal', name }, ...args)
+      await handle.signal({ type: 'signal', name } as SignalDefinition, ...args)
       return await getWorkflow({ id, runId, client, info })
     },
     cancel: async (_, { input: { id, runId } }, { client }, info) => {

@@ -34,7 +34,6 @@ spectaql:
   # Default: false
   displayAllServers: false
 
-
 introspection:
   ##############################################
   # These options specify where/how to get the information requried to generate your
@@ -103,7 +102,6 @@ introspection:
   #
   ##############################################
 
-
   ##############################################
   # These options specify how, where and if any "metadata" information is to be added to your Introspection
   # Query results IF it is not already present. If you are not dealing with metadata, or you have already
@@ -161,7 +159,6 @@ introspection:
   #
   #
   ##############################################
-
 
   # This allows you to specify a custom path to a JS moddule to handle the generation of
   # example values for your schema.
@@ -349,7 +346,7 @@ info:
       url: https://github.com/temporalio/graphql/
     # Can be a Title (for the Nav panel) + description (for the Content panel)
     - title: Alpha
-      description: ⚠️ This project is in alpha. We welcome feedback and contributions [on GitHub](https://github.com/temporalio/graphql/).
+      description: ⚠️ This project is an alpha POC of a generic GraphQL API for Temporal. We welcome feedback and contributions [on GitHub](https://github.com/temporalio/graphql/).
     # Can be a Title (for the Nav panel) + file that gets loaded (for the Content panel)
     # - title: Content from file that supports markdown
     #   file: ./examples/data/intro-items-markdown.md

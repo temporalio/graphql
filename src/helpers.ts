@@ -10,7 +10,6 @@ import {
   searchAttributePayloadConverter,
   tsToDate,
 } from '@temporalio/common'
-import { WrappedPayloadConverter } from '@temporalio/common/lib/converter/wrapped-payload-converter'
 import { GraphQLResolveInfo } from 'graphql'
 import {
   parseResolveInfo,
@@ -31,11 +30,6 @@ type GetWorkflowInput = {
   client: WorkflowClient
   info: GraphQLResolveInfo
 }
-
-const defaultConverter = new WrappedPayloadConverter(defaultPayloadConverter)
-const searchAttributeConverter = new WrappedPayloadConverter(
-  searchAttributePayloadConverter
-)
 
 export async function getWorkflow({
   id,
@@ -83,7 +77,7 @@ type GetWorkflowsInput = {
 
 export async function getWorkflows({ input, client }: GetWorkflowsInput) {
   const { executions, nextPageToken } =
-    await client.service.listWorkflowExecutions({
+    await client.workflowService.listWorkflowExecutions({
       namespace: 'default',
       ...(input || {}),
     })
@@ -108,9 +102,9 @@ export async function getWorkflows({ input, client }: GetWorkflowsInput) {
       let searchAttributes: Record<string, unknown> | undefined | null = null
 
       try {
-        memo = mapFromPayloads(defaultConverter, memoRaw?.fields)
+        memo = mapFromPayloads(defaultPayloadConverter, memoRaw?.fields)
         searchAttributes = mapFromPayloads(
-          searchAttributeConverter,
+          searchAttributePayloadConverter,
           searchAttributesRaw?.indexedFields
         )
       } catch (e) {

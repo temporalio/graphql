@@ -1,4 +1,4 @@
-*⚠️ This project is in alpha. We welcome feedback and contributions.*
+*⚠️ This project is an alpha POC of a generic GraphQL API for Temporal. We welcome feedback and contributions.*
 
 A GraphQL server that uses the [TypeScript SDK](https://docs.temporal.io/docs/typescript/introduction) to query Temporal Server. Built with [Apollo Server](https://www.apollographql.com/docs/apollo-server).
 
