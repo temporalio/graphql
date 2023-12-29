@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@graphql-cli/introspect": "^2.1.0",
-    "@graphql-codegen/cli": "^3.0.0",
+    "@graphql-codegen/cli": "^4.0.0",
     "@graphql-codegen/typescript": "^4.0.0",
     "@graphql-codegen/typescript-resolvers": "^2.6.1",
     "@graphql-inspector/graphql-cli-common": "^2.9.0",
